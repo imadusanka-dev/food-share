@@ -1,14 +1,62 @@
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { ListItem, SearchBar } from "@/components";
+import { supabase } from "@/supabase";
+import Colors from "@/constants/Colors";
+import { CATEGORIES } from "@/constants";
+import { Chip } from "react-native-paper";
+import type { FoodListing } from "@/types";
+import { useState, useEffect } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { ListItem, SearchBar, DataLoading, EmptyData } from "@/components";
 
 export default function TabOneScreen() {
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [items, setItems] = useState<FoodListing[] | null>(null);
+
+  useEffect(() => {
+    fetchItems();
+  }, [searchQuery]);
+
+  const fetchItems = async () => {
+    setLoading(true);
+    if (!searchQuery || searchQuery === "All") {
+      const { data } = await supabase
+        .from("food_listings")
+        .select("*")
+        .eq("status", "AVAILABLE")
+        .order("created_at", { ascending: false });
+      setItems(data);
+      setLoading(false);
+    } else {
+      const { data } = await supabase
+        .from("food_listings")
+        .select("*")
+        .eq("status", "AVAILABLE")
+        .or(`title.like.%${searchQuery}%,category.like.%${searchQuery}%`)
+        .order("created_at", { ascending: false });
+      setItems(data);
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <SearchBar onChangeText={setSearchQuery} value={searchQuery} />
+      <View style={styles.categoryContainer}>
+        {CATEGORIES.map((category) => (
+          <Chip
+            key={category}
+            onPress={() => setSearchQuery(category)}
+            style={styles.chip}
+          >
+            <Text style={styles.chipText}>{category}</Text>
+          </Chip>
+        ))}
+      </View>
       <View>
-        <ListItem />
+        {loading && <DataLoading />}
+        {!loading &&
+          items?.map((item) => <ListItem key={item.id} item={item} />)}
+        {!loading && !items?.length && <EmptyData />}
       </View>
     </View>
   );
@@ -18,6 +66,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
+  },
+  chip: {
+    backgroundColor: Colors.light.tint,
+  },
+  chipText: {
+    color: "#fff",
+  },
+  categoryContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 15,
   },
 });

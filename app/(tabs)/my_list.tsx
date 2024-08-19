@@ -12,6 +12,9 @@ export default function MyList() {
             Add New
           </Button>
         </Link>
+        <Link href="/login">
+          <Button mode="outlined">Login</Button>
+        </Link>
       </View>
     </View>
   );

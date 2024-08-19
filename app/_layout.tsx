@@ -48,6 +48,18 @@ function RootLayoutNav() {
           name="add"
           options={{ presentation: "modal", title: "Add New Item" }}
         />
+        <Stack.Screen
+          name="food-list/[id]"
+          options={{ presentation: "modal", title: "Details" }}
+        />
+        <Stack.Screen
+          name="login"
+          options={{ presentation: "modal", title: "Login" }}
+        />
+        <Stack.Screen
+          name="register"
+          options={{ presentation: "modal", title: "Register" }}
+        />
       </Stack>
     </PaperProvider>
   );

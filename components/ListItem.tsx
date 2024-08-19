@@ -1,25 +1,34 @@
+import { router } from "expo-router";
 import { StyleSheet } from "react-native";
-import { View, Text, Image } from "react-native";
+import type { FoodListing } from "@/types";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 
-export const ListItem = () => {
+interface ListItemProps {
+  item: FoodListing;
+}
+
+export const ListItem = ({ item }: ListItemProps) => {
+  const handlePress = () => {
+    router.push(`/food-list/${item.id}`);
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          src={"https://picsum.photos/200/300"}
-          style={{ height: "100%", width: "100%" }}
-        />
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.title}>Fired Rice</Text>
-        <Text style={styles.subTitle}>Rice</Text>
-        <Text>Restuarent Name</Text>
-        <View style={styles.bottomContainer}>
-          <Text style={styles.location}>Colombo</Text>
-          <Text>Today</Text>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image src={item.image} style={{ height: "100%", width: "100%" }} />
+        </View>
+        <View style={styles.content}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.subTitle}>{item.category}</Text>
+          <Text>{item.user_name}</Text>
+          <View style={styles.bottomContainer}>
+            <Text style={styles.location}>{item.city}</Text>
+            <Text>Today</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

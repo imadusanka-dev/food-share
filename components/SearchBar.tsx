@@ -12,7 +12,7 @@ export const SearchBar = ({ value, onChangeText }: Props) => {
       onChangeText={onChangeText}
       value={value}
       style={{
-        marginBottom: 20,
+        marginBottom: 15,
         backgroundColor: "white",
         borderStyle: "solid",
         borderColor: "black",
