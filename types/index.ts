@@ -10,4 +10,5 @@ export interface FoodListing {
   created_at: string; // You can use Date if you parse it into a Date object
   user_id: number | null;
   user_name: string | null;
+  phone: string | null;
 }

@@ -1,16 +1,30 @@
-import { useState } from "react";
 import { router } from "expo-router";
 import { supabase } from "@/supabase";
 import Colors from "@/constants/Colors";
+import { useState, useEffect } from "react";
 import { decode } from "base64-arraybuffer";
+import { Session } from "@supabase/supabase-js";
 import * as ImagePicker from "expo-image-picker";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { TextInput, Button, RadioButton } from "react-native-paper";
 import { SUPABASE_STORAGE_BASE_URL, ITEM_STATUS } from "@/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AddItem = () => {
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await AsyncStorage.getItem("supabase-session");
+      if (session) {
+        setSession(JSON.parse(session));
+      }
+    };
+    fetchSession();
+  }, []);
 
   const {
     control,
@@ -60,11 +74,13 @@ const AddItem = () => {
   };
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const { title, quantity, special_notes, category, city } = data;
     const uploadedImage = await uploadImage(image);
 
     if (!uploadedImage) {
       Alert.alert("Error", "Image uploading failed");
+      setLoading(false);
       return;
     }
 
@@ -76,6 +92,9 @@ const AddItem = () => {
       city,
       image: `${SUPABASE_STORAGE_BASE_URL}${uploadedImage.fullPath}`,
       status: ITEM_STATUS.AVAILABLE,
+      user_id: session?.user.id,
+      user_name: session?.user.user_metadata.name,
+      phone: session?.user.user_metadata.phone,
     };
 
     //save data in supabase
@@ -86,6 +105,7 @@ const AddItem = () => {
     if (error) {
       console.log(error);
       Alert.alert("Error", "Failed to save data");
+      setLoading(false);
       return;
     }
 
@@ -119,11 +139,12 @@ const AddItem = () => {
             value={value}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
+            error={!!errors.title}
           />
         )}
         name="title"
       />
-      {errors.title && <Text>This is required.</Text>}
+      {errors.title && <Text style={styles.error}>Title is required.</Text>}
 
       <Controller
         control={control}
@@ -157,6 +178,9 @@ const AddItem = () => {
         )}
         name="category"
       />
+      {errors.category && (
+        <Text style={styles.error}>Category is required.</Text>
+      )}
 
       <Controller
         control={control}
@@ -171,10 +195,14 @@ const AddItem = () => {
             value={value}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
+            error={!!errors.quantity}
           />
         )}
         name="quantity"
       />
+      {errors.quantity && (
+        <Text style={styles.error}>Quantity is required.</Text>
+      )}
 
       <Controller
         control={control}
@@ -189,16 +217,17 @@ const AddItem = () => {
             value={value}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
+            error={!!errors.city}
           />
         )}
         name="city"
       />
+      {errors.city && (
+        <Text style={styles.error}>Pickup location is required.</Text>
+      )}
 
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             style={styles.formItem}
@@ -219,6 +248,7 @@ const AddItem = () => {
           textColor="#fff"
           mode="contained-tonal"
           onPress={handleSubmit(onSubmit)}
+          loading={loading}
         >
           Submit
         </Button>
@@ -250,5 +280,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
+  },
+  error: {
+    color: "#BD301C",
   },
 });

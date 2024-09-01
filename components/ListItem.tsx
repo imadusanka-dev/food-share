@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import { StyleSheet } from "react-native";
+import { getRelativeDate } from "@/utils";
 import type { FoodListing } from "@/types";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
@@ -24,7 +25,7 @@ export const ListItem = ({ item }: ListItemProps) => {
           <Text>{item.user_name}</Text>
           <View style={styles.bottomContainer}>
             <Text style={styles.location}>{item.city}</Text>
-            <Text>Today</Text>
+            {/* <Text>{getRelativeDate(styles.)}</Text> */}
           </View>
         </View>
       </View>

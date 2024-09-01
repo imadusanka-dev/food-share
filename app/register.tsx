@@ -51,10 +51,9 @@ export default function RgisterScreen() {
     },
   });
 
-  console.log(errors);
-
   const onSubmit = async (input: FormData) => {
     const { name, email, password, phone } = input;
+    console.log("------", phone);
 
     const {
       data: { session, user },
@@ -62,10 +61,10 @@ export default function RgisterScreen() {
     } = await supabase.auth.signUp({
       email,
       password,
-      phone,
       options: {
         data: {
           name,
+          phone,
         },
       },
     });
@@ -77,10 +76,7 @@ export default function RgisterScreen() {
     }
 
     await AsyncStorage.setItem("supabase-session", JSON.stringify(session));
-
     Alert.alert("Success", "Account created successfully");
-
-    console.log(session, user);
     router.push("/my_list");
   };
 

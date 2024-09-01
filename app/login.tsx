@@ -35,7 +35,6 @@ export default function LoginScreen() {
     }
 
     await AsyncStorage.setItem("supabase-session", JSON.stringify(session));
-    console.log("--------session", session);
     router.push("/my_list");
   };
 
