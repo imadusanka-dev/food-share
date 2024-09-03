@@ -48,7 +48,7 @@ const Details = () => {
             <View style={styles.subTitleContainer}>
               <Text style={styles.category}>{item.category}</Text>
               <Text style={styles.date}>
-                Posted on: {dayjs(item.created_at).format("YYYY-MM-DD hh:mm A")}
+                Posted on: {dayjs(item.created_at).format("YYYY-MM-DD")}
               </Text>
             </View>
             <Divider />
@@ -61,7 +61,7 @@ const Details = () => {
                 />
                 <Text>{item.city}</Text>
               </View>
-              <Text>Iusru Madusanka</Text>
+              <Text>{item.user_name}</Text>
             </View>
             <Text>{item.special_notes}</Text>
             <View style={styles.contactButtonContainer}>

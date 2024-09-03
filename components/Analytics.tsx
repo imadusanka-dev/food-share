@@ -1,19 +1,15 @@
-import { View, Text } from "./Themed";
-import { StyleSheet } from "react-native";
+import { View } from "./Themed";
+import type { FoodListing } from "@/types";
+import { AnalyticsChart } from "./AnalyticsChart";
 
-export const Analytics = () => {
+interface Props {
+  items: FoodListing[];
+}
+
+export const Analytics = ({ items }: Props) => {
   return (
     <View>
-      <Text>Analytics</Text>
+      <AnalyticsChart items={items} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  topContainer: {
-    alignItems: "flex-end",
-  },
-});

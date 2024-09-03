@@ -1,12 +1,16 @@
+import { useContext } from "react";
 import { supabase } from "@/supabase";
 import { Link, router } from "expo-router";
 import { Alert, StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
+import { AuthContext } from "@/context/authContext";
 import { useForm, Controller } from "react-hook-form";
 import { TextInput, Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen() {
+  const { setLoggedIn } = useContext(AuthContext);
+
   const {
     control,
     handleSubmit,
@@ -35,6 +39,7 @@ export default function LoginScreen() {
     }
 
     await AsyncStorage.setItem("supabase-session", JSON.stringify(session));
+    setLoggedIn(true);
     router.push("/my_list");
   };
 

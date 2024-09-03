@@ -1,8 +1,10 @@
 import { z } from "zod";
+import { useContext } from "react";
 import { supabase } from "@/supabase";
 import { Link, router } from "expo-router";
 import { StyleSheet, Alert } from "react-native";
 import { Text, View } from "@/components/Themed";
+import { AuthContext } from "@/context/authContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { TextInput, Button } from "react-native-paper";
@@ -36,6 +38,8 @@ const signUpSchema = z
   });
 
 export default function RgisterScreen() {
+  const { setLoggedIn } = useContext(AuthContext);
+
   const {
     control,
     handleSubmit,
@@ -53,7 +57,6 @@ export default function RgisterScreen() {
 
   const onSubmit = async (input: FormData) => {
     const { name, email, password, phone } = input;
-    console.log("------", phone);
 
     const {
       data: { session, user },
@@ -77,6 +80,7 @@ export default function RgisterScreen() {
 
     await AsyncStorage.setItem("supabase-session", JSON.stringify(session));
     Alert.alert("Success", "Account created successfully");
+    setLoggedIn(true);
     router.push("/my_list");
   };
 

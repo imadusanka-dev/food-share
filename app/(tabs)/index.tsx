@@ -3,14 +3,29 @@ import Colors from "@/constants/Colors";
 import { CATEGORIES } from "@/constants";
 import { Chip } from "react-native-paper";
 import type { FoodListing } from "@/types";
-import { useState, useEffect } from "react";
+import { AuthContext } from "@/context/authContext";
 import { StyleSheet, View, Text } from "react-native";
+import { useState, useEffect, useContext } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ListItem, SearchBar, DataLoading, EmptyData } from "@/components";
+import { set } from "react-hook-form";
 
 export default function TabOneScreen() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [items, setItems] = useState<FoodListing[] | null>(null);
+
+  const { setLoggedIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await AsyncStorage.getItem("supabase-session");
+      if (session) {
+        setLoggedIn(true);
+      }
+    };
+    fetchSession();
+  }, []);
 
   useEffect(() => {
     fetchItems();

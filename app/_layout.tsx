@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 export { ErrorBoundary } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { PaperProvider } from "react-native-paper";
+import { AuthProvider } from "@/context/authContext";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export const unstable_settings = {
@@ -42,25 +43,31 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <PaperProvider>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="add"
-          options={{ presentation: "modal", title: "Add New Item" }}
-        />
-        <Stack.Screen
-          name="food-list/[id]"
-          options={{ presentation: "modal", title: "Details" }}
-        />
-        <Stack.Screen
-          name="login"
-          options={{ presentation: "modal", title: "Login" }}
-        />
-        <Stack.Screen
-          name="register"
-          options={{ presentation: "modal", title: "Register" }}
-        />
-      </Stack>
+      <AuthProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="add"
+            options={{ presentation: "modal", title: "Add New Item" }}
+          />
+          <Stack.Screen
+            name="food-list/[id]"
+            options={{ presentation: "modal", title: "Details" }}
+          />
+          <Stack.Screen
+            name="edit/[id]"
+            options={{ presentation: "modal", title: "Edit" }}
+          />
+          <Stack.Screen
+            name="login"
+            options={{ presentation: "modal", title: "Login" }}
+          />
+          <Stack.Screen
+            name="register"
+            options={{ presentation: "modal", title: "Register" }}
+          />
+        </Stack>
+      </AuthProvider>
     </PaperProvider>
   );
 }

@@ -1,11 +1,13 @@
-import React from "react";
+import Colors from "@/constants/Colors";
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
+import React, { useContext } from "react";
+import { Button } from "react-native-paper";
+import { AuthContext } from "@/context/authContext";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-
-import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -17,6 +19,12 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("supabase-session");
+    setLoggedIn(false);
+  };
 
   return (
     <Tabs
@@ -32,20 +40,32 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
-            <Link href="/login" asChild>
-              <Pressable>
+          headerRight: () =>
+            isLoggedIn ? (
+              <Pressable onPress={handleLogout}>
                 {({ pressed }) => (
                   <FontAwesome
-                    name="sign-in"
+                    name="sign-out"
                     size={25}
                     color={Colors[colorScheme ?? "light"].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
               </Pressable>
-            </Link>
-          ),
+            ) : (
+              <Link href="/login" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <FontAwesome
+                      name="sign-in"
+                      size={25}
+                      color={Colors[colorScheme ?? "light"].text}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            ),
         }}
       />
       <Tabs.Screen

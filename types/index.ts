@@ -6,9 +6,9 @@ export interface FoodListing {
   special_notes: string;
   status: "AVAILABLE" | "CLAIMED";
   image: string;
-  city: string | null;
+  city: string;
   created_at: string;
-  user_id: number | null;
-  user_name: string | null;
-  phone: string | null;
+  user_id: number;
+  user_name: string;
+  phone: string;
 }

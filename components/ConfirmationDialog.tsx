@@ -1,18 +1,37 @@
+import React from "react";
 import { View } from "react-native";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
 
-export const ConfirmationDialog = () => {
+interface Props {
+  visible: boolean;
+  onConfirm: () => void;
+  onDismiss: () => void;
+  title: string;
+  content: string;
+  primaryLabel: string;
+  secondaryLabel: string;
+}
+
+export const ConfirmationDialog = ({
+  visible,
+  onConfirm,
+  onDismiss,
+  title,
+  content,
+  primaryLabel,
+  secondaryLabel,
+}: Props) => {
   return (
     <View>
       <Portal>
-        <Dialog visible={true} onDismiss={() => {}}>
-          <Dialog.Title>Confirmation</Dialog.Title>
+        <Dialog visible={visible} onDismiss={onDismiss}>
+          <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Content>
-            <Text>Are you sure you want to delete this item?</Text>
+            <Text variant="bodyMedium">{content}</Text>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button>Cancel</Button>
-            <Button>Delete</Button>
+            <Button onPress={onDismiss}>{secondaryLabel}</Button>
+            <Button onPress={onConfirm}>{primaryLabel}</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

@@ -1,15 +1,16 @@
 import { Link } from "expo-router";
 import { supabase } from "@/supabase";
-import { StyleSheet } from "react-native";
+import { View } from "@/components/Themed";
 import type { FoodListing } from "@/types";
 import { useState, useEffect } from "react";
-import { Button } from "react-native-paper";
 import { Session } from "@supabase/supabase-js";
-import { Text, View } from "@/components/Themed";
+import { StyleSheet, ScrollView } from "react-native";
+import { Button, SegmentedButtons } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Analytics, MyListItems, DataLoading, EmptyData } from "@/components";
 
 export default function MyList() {
+  const [value, setValue] = useState("list");
   const [session, setSession] = useState<Session | null>(null);
   const [items, setItems] = useState<FoodListing[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +33,7 @@ export default function MyList() {
   }, [session]);
 
   const fetchFoodListingsByUserId = async () => {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("food_listings")
       .select("*")
       .eq("user_id", session?.user?.id)
@@ -42,7 +43,7 @@ export default function MyList() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.topContainer}>
         {session ? (
           <Link href="/add">
@@ -57,18 +58,39 @@ export default function MyList() {
         )}
       </View>
       {session && (
-        <View>
+        <View style={{ marginTop: 20 }}>
           {loading && <DataLoading />}
           {!loading && items?.length === 0 && <EmptyData />}
-          {!loading && items?.length && (
+          {!loading && items && items?.length > 0 && (
             <>
-              <Analytics />
-              <MyListItems items={items} />
+              <SegmentedButtons
+                value={value}
+                onValueChange={setValue}
+                buttons={[
+                  {
+                    value: "list",
+                    label: "List",
+                    icon: "format-list-bulleted",
+                  },
+                  {
+                    value: "summary",
+                    label: "Summary",
+                    icon: "chart-pie",
+                  },
+                ]}
+              />
+              {value === "summary" && <Analytics items={items} />}
+              {value === "list" && (
+                <MyListItems
+                  items={items}
+                  reFetchItems={fetchFoodListingsByUserId}
+                />
+              )}
             </>
           )}
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -76,6 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "#fff",
   },
   topContainer: {
     alignItems: "flex-end",
