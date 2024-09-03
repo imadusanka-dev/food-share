@@ -25,7 +25,7 @@ export const ListItem = ({ item }: ListItemProps) => {
           <Text>{item.user_name}</Text>
           <View style={styles.bottomContainer}>
             <Text style={styles.location}>{item.city}</Text>
-            {/* <Text>{getRelativeDate(styles.)}</Text> */}
+            <Text>{getRelativeDate(item.created_at)}</Text>
           </View>
         </View>
       </View>

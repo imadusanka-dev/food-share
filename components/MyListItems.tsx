@@ -1,6 +1,7 @@
 import { View, Text } from "./Themed";
 import type { FoodListing } from "@/types";
 import { Image, StyleSheet } from "react-native";
+import { IconButton, Button } from "react-native-paper";
 
 interface Props {
   items: FoodListing[] | null;
@@ -15,10 +16,10 @@ const ListItem = ({ item }: { item: FoodListing }) => {
       <View style={styles.content}>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.subTitle}>{item.category}</Text>
-        <Text>{item.user_name}</Text>
         <View style={styles.bottomContainer}>
-          <Text style={styles.location}>{item.city}</Text>
-          <Text>Today</Text>
+          <IconButton icon="delete" mode="contained" size={15} />
+          <IconButton icon="pencil" mode="contained" size={15} />
+          <IconButton icon="check" mode="contained" size={15} />
         </View>
       </View>
     </View>
@@ -60,8 +61,5 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  location: {
-    color: "grey",
   },
 });

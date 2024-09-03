@@ -7,7 +7,7 @@ import { Session } from "@supabase/supabase-js";
 import * as ImagePicker from "expo-image-picker";
 import { useForm, Controller, set } from "react-hook-form";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
-import { TextInput, Button, RadioButton } from "react-native-paper";
+import { TextInput, Button, RadioButton, HelperText } from "react-native-paper";
 import { SUPABASE_STORAGE_BASE_URL, ITEM_STATUS } from "@/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -144,7 +144,9 @@ const AddItem = () => {
         )}
         name="title"
       />
-      {errors.title && <Text style={styles.error}>Title is required.</Text>}
+      <HelperText type="error" visible={!!errors.title}>
+        Title is required
+      </HelperText>
 
       <Controller
         control={control}
@@ -178,10 +180,9 @@ const AddItem = () => {
         )}
         name="category"
       />
-      {errors.category && (
-        <Text style={styles.error}>Category is required.</Text>
-      )}
-
+      <HelperText type="error" visible={!!errors.category}>
+        Category is required
+      </HelperText>
       <Controller
         control={control}
         rules={{
@@ -200,9 +201,9 @@ const AddItem = () => {
         )}
         name="quantity"
       />
-      {errors.quantity && (
-        <Text style={styles.error}>Quantity is required.</Text>
-      )}
+      <HelperText type="error" visible={!!errors.quantity}>
+        Quantity is required.
+      </HelperText>
 
       <Controller
         control={control}
@@ -222,9 +223,9 @@ const AddItem = () => {
         )}
         name="city"
       />
-      {errors.city && (
-        <Text style={styles.error}>Pickup location is required.</Text>
-      )}
+      <HelperText type="error" visible={!!errors.city}>
+        Pickup location is required.
+      </HelperText>
 
       <Controller
         control={control}

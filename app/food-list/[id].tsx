@@ -30,7 +30,7 @@ const Details = () => {
   }, [id]);
 
   const handleCall = () => {
-    const phoneNumber = `tel:0779132867`;
+    const phoneNumber = `tel:${item?.phone}`;
 
     Linking.openURL(phoneNumber).catch((err) => {
       Alert.alert("Error", "Unable to open dialer.");
@@ -42,10 +42,7 @@ const Details = () => {
       {loading && <DataLoading />}
       {!loading && item && (
         <>
-          <Image
-            source={{ uri: item.image }}
-            style={{ height: 300, width: "100%" }}
-          />
+          <Image source={{ uri: item.image }} style={styles.image} />
           <View style={styles.container}>
             <Text style={styles.title}>{item.title}</Text>
             <View style={styles.subTitleContainer}>
@@ -94,6 +91,7 @@ const styles = StyleSheet.create({
   subTitleContainer: {
     justifyContent: "space-between",
     flexDirection: "row",
+    marginBottom: 10,
   },
   category: {
     fontSize: 15,
@@ -113,4 +111,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: "center",
   },
+  image: { height: 300, width: "100%" },
 });

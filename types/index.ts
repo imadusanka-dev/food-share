@@ -7,7 +7,7 @@ export interface FoodListing {
   status: "AVAILABLE" | "CLAIMED";
   image: string;
   city: string | null;
-  created_at: string; // You can use Date if you parse it into a Date object
+  created_at: string;
   user_id: number | null;
   user_name: string | null;
   phone: string | null;
