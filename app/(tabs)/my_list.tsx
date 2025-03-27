@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link } from "expo-router";
 import { supabase } from "@/supabase";
-import type { FoodListing } from "@/types";
+import type { ItemListing } from "@/types";
 import { useState, useEffect } from "react";
 import { Session } from "@supabase/supabase-js";
 import { View, Text } from "@/components/Themed";
@@ -14,7 +14,7 @@ import { Analytics, MyListItems, DataLoading, EmptyData } from "@/components";
 export default function MyList() {
   const [value, setValue] = useState("list");
   const [session, setSession] = useState<Session | null>(null);
-  const [items, setItems] = useState<FoodListing[] | null>(null);
+  const [items, setItems] = useState<ItemListing[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   const { isLoggedIn } = useContext(AuthContext);
@@ -38,10 +38,11 @@ export default function MyList() {
 
   const fetchFoodListingsByUserId = async () => {
     const { data } = await supabase
-      .from("food_listings")
-      .select("*")
+      .from("items")
+      .select()
       .eq("user_id", session?.user?.id)
       .order("created_at", { ascending: false });
+      console.log("data", data);
     setItems(data);
     setLoading(false);
   };

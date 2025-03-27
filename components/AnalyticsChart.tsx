@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, View } from "react-native";
-import type { FoodListing } from "@/types";
+import type { ItemListing } from "@/types";
 import { PieChart } from "react-native-gifted-charts";
 
 interface Props {
-  items: FoodListing[];
+  items: ItemListing[];
 }
 
 export const AnalyticsChart = ({ items }: Props) => {
@@ -18,38 +18,55 @@ export const AnalyticsChart = ({ items }: Props) => {
     return new Date(item.created_at) > sevenDaysAgo;
   }).length;
 
-  const riceCount = items.filter((item) => item.category === "Rice").length;
-  const bakeryCount = items.filter((item) => item.category === "Bakery").length;
-  const desertsCount = items.filter(
-    (item) => item.category === "Deserts",
+  const clothingCount = items.filter((item) => item.category === "Clothing").length;
+  const electronicsCount = items.filter((item) => item.category === "Electronics").length;
+  const homeEssentialsCount = items.filter(
+    (item) => item.category === "Home Essentials",
   ).length;
-  const othersCount = items.filter((item) => item.category === "Others").length;
+  const stationeryCount = items.filter((item) => item.category === "Stationery").length;
+  const sportsCount = items.filter((item) => item.category === "Sports").length;
+  const miscellaneousCount = items.filter(
+    (item) => item.category === "Miscellaneous",
+  ).length;
 
-  const ricePercentage = (riceCount / totalDonations) * 100;
-  const bakeryPercentage = (bakeryCount / totalDonations) * 100;
-  const desertsPercentage = (desertsCount / totalDonations) * 100;
-  const othersPercentage = (othersCount / totalDonations) * 100;
+  const clothingPercentage = (clothingCount / totalDonations) * 100;
+  const electronicsPercentage = (electronicsCount / totalDonations) * 100;
+  const homeEssentialsPercentage = (homeEssentialsCount / totalDonations) * 100;
+  const stationeryPercentage = (stationeryCount / totalDonations) * 100;
+  const sportsPercentage = (sportsCount / totalDonations) * 100;
+  const miscellaneousPercentage = (miscellaneousCount / totalDonations) * 100;
+
 
   const pieData = [
     {
-      value: ricePercentage,
+      value: clothingPercentage,
       color: "#009FFF",
       gradientCenterColor: "#006DFF",
     },
     {
-      value: bakeryPercentage,
+      value: electronicsPercentage,
       color: "#93FCF8",
       gradientCenterColor: "#3BE9DE",
     },
     {
-      value: desertsPercentage,
+      value: homeEssentialsPercentage,
       color: "#BDB2FA",
       gradientCenterColor: "#8F80F3",
     },
     {
-      value: othersPercentage,
+      value: stationeryPercentage,
       color: "#FFA5BA",
       gradientCenterColor: "#FF7F97",
+    },
+    {
+      value: sportsPercentage,
+      color: "#FFD6A5",
+      gradientCenterColor: "#FFB800",
+    },
+    {
+      value: miscellaneousPercentage,
+      color: "#FF8C8C",
+      gradientCenterColor: "#FF4D4D",
     },
   ];
 
@@ -86,13 +103,13 @@ export const AnalyticsChart = ({ items }: Props) => {
             }}
           >
             {renderDot("#006DFF")}
-            <Text style={{ color: "white" }}>Rice: {ricePercentage}%</Text>
+            <Text style={{ color: "white" }}>Clothing: {clothingPercentage}%</Text>
           </View>
           <View
             style={{ flexDirection: "row", alignItems: "center", width: 120 }}
           >
             {renderDot("#8F80F3")}
-            <Text style={{ color: "white" }}>Bakery: {bakeryPercentage}%</Text>
+            <Text style={{ color: "white" }}>Electronics: {electronicsPercentage}%</Text>
           </View>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -106,14 +123,35 @@ export const AnalyticsChart = ({ items }: Props) => {
           >
             {renderDot("#3BE9DE")}
             <Text style={{ color: "white" }}>
-              Deserts: {desertsPercentage}%
+              Home Essentials: {homeEssentialsPercentage}%
             </Text>
           </View>
           <View
             style={{ flexDirection: "row", alignItems: "center", width: 120 }}
           >
             {renderDot("#FF7F97")}
-            <Text style={{ color: "white" }}>Others: {othersPercentage}%</Text>
+            <Text style={{ color: "white" }}>Stationery: {stationeryPercentage}%</Text>
+          </View>
+        </View>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              width: 120,
+              marginRight: 20,
+            }}
+          >
+            {renderDot("#FFB800")}
+            <Text style={{ color: "white" }}>
+              Sports: {sportsPercentage}%
+            </Text>
+          </View>
+          <View
+            style={{ flexDirection: "row", alignItems: "center", width: 120 }}
+          >
+            {renderDot("#FF4D4D")}
+            <Text style={{ color: "white" }}>Miscellaneous: {miscellaneousPercentage}%</Text>
           </View>
         </View>
       </>

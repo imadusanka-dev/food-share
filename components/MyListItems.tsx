@@ -4,18 +4,18 @@ import { supabase } from "@/supabase";
 import { View, Text } from "./Themed";
 import { ITEM_STATUS } from "@/constants";
 import { getRelativeDate } from "@/utils";
-import type { FoodListing } from "@/types";
+import type { ItemListing } from "@/types";
 import { IconButton } from "react-native-paper";
 import { Image, StyleSheet, Alert } from "react-native";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 
 interface Props {
-  items: FoodListing[] | null;
+  items: ItemListing[] | null;
   reFetchItems: () => void;
 }
 
 interface ListItemProps {
-  item: FoodListing;
+  item: ItemListing;
   handleDelete: (id: number) => void;
   handleComplete: (id: number) => void;
 }
@@ -118,7 +118,7 @@ const ListItem = ({ item, handleComplete, handleDelete }: ListItemProps) => {
 export const MyListItems = ({ items, reFetchItems }: Props) => {
   const handleDelete = async (id: number) => {
     const { error } = await supabase
-      .from("food_listings")
+      .from("items")
       .delete()
       .eq("id", id);
 
@@ -136,7 +136,7 @@ export const MyListItems = ({ items, reFetchItems }: Props) => {
     };
 
     const { error } = await supabase
-      .from("food_listings")
+      .from("items")
       .update(payload)
       .eq("id", id);
 

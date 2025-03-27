@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { supabase } from "@/supabase";
-import type { FoodListing } from "@/types";
+import type { ItemListing } from "@/types";
 import { DataLoading } from "@/components";
 import { useEffect, useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -12,12 +12,12 @@ import Colors from "@/constants/Colors";
 const Details = () => {
   const { id } = useLocalSearchParams();
   const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState<FoodListing | null>(null);
+  const [item, setItem] = useState<ItemListing | null>(null);
 
   useEffect(() => {
     const fetchItem = async () => {
       const { data, error } = await supabase
-        .from("food_listings")
+        .from("items")
         .select("*")
         .eq("id", id)
         .single();

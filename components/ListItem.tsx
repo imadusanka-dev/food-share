@@ -1,11 +1,11 @@
 import { router } from "expo-router";
 import { StyleSheet } from "react-native";
 import { getRelativeDate } from "@/utils";
-import type { FoodListing } from "@/types";
+import type { ItemListing } from "@/types";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
 interface ListItemProps {
-  item: FoodListing;
+  item: ItemListing;
 }
 
 export const ListItem = ({ item }: ListItemProps) => {

@@ -1,5 +1,5 @@
 import { supabase } from "../../supabase";
-import type { FoodListing } from "../../types";
+import type { ItemListing } from "../../types";
 import React, { useState, useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { ItemForm, DataLoading } from "../../components";
@@ -7,12 +7,12 @@ import { ItemForm, DataLoading } from "../../components";
 const Edit = () => {
   const { id } = useLocalSearchParams();
   const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState<FoodListing | null>(null);
+  const [item, setItem] = useState<ItemListing | undefined>(undefined);
 
   useEffect(() => {
     const fetchItem = async () => {
       const { data } = await supabase
-        .from("food_listings")
+        .from("items")
         .select("*")
         .eq("id", id)
         .single();

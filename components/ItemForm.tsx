@@ -2,7 +2,7 @@ import React from "react";
 import { router } from "expo-router";
 import { supabase } from "../supabase";
 import Colors from "../constants/Colors";
-import type { FoodListing } from "@/types";
+import type { ItemListing } from "@/types";
 import { useState, useEffect } from "react";
 import { decode } from "base64-arraybuffer";
 import { Session } from "@supabase/supabase-js";
@@ -22,7 +22,7 @@ import {
 } from "react-native";
 
 interface Props {
-  item?: FoodListing;
+  item?: ItemListing;
 }
 
 export const ItemForm = ({ item }: Props) => {
@@ -74,7 +74,7 @@ export const ItemForm = ({ item }: Props) => {
 
   const uploadImage = async (image) => {
     const { data, error } = await supabase.storage
-      .from("food-share")
+      .from("re-gift")
       .upload(
         `${new Date().getTime()}-${image.fileName}`,
         decode(image.base64),
@@ -115,9 +115,11 @@ export const ItemForm = ({ item }: Props) => {
           : imageURL,
       };
 
+      console.log("payload", payload);
+
       //update data in supabase
       const { error } = await supabase
-        .from("food_listings")
+        .from("items")
         .update(payload)
         .eq("id", item.id);
 
@@ -145,7 +147,7 @@ export const ItemForm = ({ item }: Props) => {
       };
 
       //save data in supabase
-      const { error } = await supabase.from("food_listings").insert([payload]);
+      const { error } = await supabase.from("items").insert([payload]);
 
       if (error) {
         console.log(error);
@@ -206,20 +208,28 @@ export const ItemForm = ({ item }: Props) => {
           >
             <View style={styles.categoryContainer}>
               <View>
-                <Text>Rice</Text>
-                <RadioButton value="Rice" />
+                <Text>Clothing</Text>
+                <RadioButton value="Clothing" />
               </View>
               <View>
-                <Text>Bakery</Text>
-                <RadioButton value="Bakery" />
+                <Text>Electronics</Text>
+                <RadioButton value="Electronics" />
               </View>
               <View>
-                <Text>Desserts</Text>
-                <RadioButton value="Desserts" />
+                <Text>Home Essentials</Text>
+                <RadioButton value="Home Essentials" />
               </View>
               <View>
-                <Text>Other</Text>
-                <RadioButton value="Other" />
+                <Text>Stationery</Text>
+                <RadioButton value="Stationery" />
+              </View>
+              <View>
+                <Text>Sports</Text>
+                <RadioButton value="Sports" />
+              </View>
+              <View>
+                <Text>Miscellaneous</Text>
+                <RadioButton value="Miscellaneous" />
               </View>
             </View>
           </RadioButton.Group>
@@ -322,8 +332,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   categoryContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    // justifyContent: "space-between",
     marginBottom: 10,
   },
   error: {

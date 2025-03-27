@@ -2,7 +2,7 @@ import { supabase } from "@/supabase";
 import Colors from "@/constants/Colors";
 import { CATEGORIES } from "@/constants";
 import { Chip } from "react-native-paper";
-import type { FoodListing } from "@/types";
+import type { ItemListing } from "@/types";
 import { AuthContext } from "@/context/authContext";
 import { StyleSheet, View, Text } from "react-native";
 import { useState, useEffect, useContext } from "react";
@@ -13,7 +13,7 @@ import { set } from "react-hook-form";
 export default function TabOneScreen() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [items, setItems] = useState<FoodListing[] | null>(null);
+  const [items, setItems] = useState<ItemListing[] | null>(null);
 
   const { setLoggedIn } = useContext(AuthContext);
 
@@ -35,7 +35,7 @@ export default function TabOneScreen() {
     setLoading(true);
     if (!searchQuery || searchQuery === "All") {
       const { data } = await supabase
-        .from("food_listings")
+        .from("items")
         .select("*")
         .eq("status", "AVAILABLE")
         .order("created_at", { ascending: false });
@@ -43,7 +43,7 @@ export default function TabOneScreen() {
       setLoading(false);
     } else {
       const { data } = await supabase
-        .from("food_listings")
+        .from("items")
         .select("*")
         .eq("status", "AVAILABLE")
         .or(`title.like.%${searchQuery}%,category.like.%${searchQuery}%`)
@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    gap: 3,
+    flexWrap: "wrap",
     marginBottom: 15,
   },
 });

@@ -1,9 +1,9 @@
 import { View } from "./Themed";
-import type { FoodListing } from "@/types";
+import type { ItemListing } from "@/types";
 import { AnalyticsChart } from "./AnalyticsChart";
 
 interface Props {
-  items: FoodListing[];
+  items: ItemListing[];
 }
 
 export const Analytics = ({ items }: Props) => {
