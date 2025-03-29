@@ -103,13 +103,13 @@ export const AnalyticsChart = ({ items }: Props) => {
             }}
           >
             {renderDot("#006DFF")}
-            <Text style={{ color: "white" }}>Clothing: {clothingPercentage}%</Text>
+            <Text style={{ color: "white" }}>Clothing: {}%</Text>
           </View>
           <View
             style={{ flexDirection: "row", alignItems: "center", width: 120 }}
           >
             {renderDot("#8F80F3")}
-            <Text style={{ color: "white" }}>Electronics: {electronicsPercentage}%</Text>
+            <Text style={{ color: "white" }}>Electronics: {electronicsPercentage?.toFixed(2)}%</Text>
           </View>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -123,14 +123,14 @@ export const AnalyticsChart = ({ items }: Props) => {
           >
             {renderDot("#3BE9DE")}
             <Text style={{ color: "white" }}>
-              Home Essentials: {homeEssentialsPercentage}%
+              Home Essentials: {homeEssentialsPercentage?.toFixed(2)}%
             </Text>
           </View>
           <View
             style={{ flexDirection: "row", alignItems: "center", width: 120 }}
           >
             {renderDot("#FF7F97")}
-            <Text style={{ color: "white" }}>Stationery: {stationeryPercentage}%</Text>
+            <Text style={{ color: "white" }}>Stationery: {stationeryPercentage?.toFixed(2)}%</Text>
           </View>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -144,14 +144,14 @@ export const AnalyticsChart = ({ items }: Props) => {
           >
             {renderDot("#FFB800")}
             <Text style={{ color: "white" }}>
-              Sports: {sportsPercentage}%
+              Sports: {sportsPercentage?.toFixed(2)}%
             </Text>
           </View>
           <View
             style={{ flexDirection: "row", alignItems: "center", width: 120 }}
           >
             {renderDot("#FF4D4D")}
-            <Text style={{ color: "white" }}>Miscellaneous: {miscellaneousPercentage}%</Text>
+            <Text style={{ color: "white" }}>Miscellaneous: {miscellaneousPercentage?.toFixed(2)}%</Text>
           </View>
         </View>
       </>
